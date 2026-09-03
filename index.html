@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="色彩敏感度測試：以 CIEDE2000 與 adaptive staircase 估計色彩差異辨識閾值的互動體驗。"
+    />
+    <meta name="theme-color" content="#eef1f3" />
+    <title>色彩敏感度測試｜Color Sensitivity Test</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="site-header" aria-label="網站標題">
+        <a class="brand" href="#" id="brand-home" aria-label="回到開始畫面">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>CHROMA<span class="brand-light">LAB</span></span>
+        </a>
+        <span class="header-meta">INTERACTIVE TEST · V1</span>
+      </header>
+
+      <section id="landing-screen" class="screen landing-screen is-active" aria-labelledby="landing-title">
+        <div class="landing-copy">
+          <p class="eyebrow"><span></span> 視覺知覺互動體驗</p>
+          <h1 id="landing-title">色彩敏感度<br /><em>測試</em></h1>
+          <p class="lead">在每一題中，找出與其他格子顏色不同的方塊。</p>
+          <div class="rule-strip" aria-label="測驗規則摘要">
+            <div><strong>02</strong><span>練習題</span></div>
+            <div><strong>30</strong><span>正式題</span></div>
+            <div><strong>10s</strong><span>每題上限</span></div>
+          </div>
+          <button id="start-button" class="primary-button" type="button">
+            開始測驗 <span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <aside class="instruction-card" aria-label="測驗前提醒">
+          <div class="matrix-preview" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="instruction-content">
+            <span class="instruction-number">01 / 準備</span>
+            <h2>第一次點擊<br />就是你的答案</h2>
+            <p>每題最多 10 秒。答對、答錯或逾時後，都會立即進入下一題。</p>
+            <div class="environment-note">
+              <span aria-hidden="true">◉</span>
+              <p>建議在穩定的室內光線下進行測驗，並保持螢幕亮度穩定。</p>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="game-screen" class="screen game-screen" aria-labelledby="game-heading" hidden>
+        <div class="game-header">
+          <div>
+            <p id="phase-label" class="eyebrow"><span></span> 練習</p>
+            <h1 id="game-heading">找出不同顏色的方塊</h1>
+          </div>
+          <div class="trial-readout" aria-live="polite">
+            <span id="trial-progress">練習 1 / 2</span>
+            <strong id="time-remaining">10.0 秒</strong>
+          </div>
+        </div>
+
+        <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+
+        <div class="game-stage">
+          <div id="color-grid" class="color-grid" role="group" aria-label="色彩方格"></div>
+          <p id="game-status" class="game-status" aria-live="assertive"></p>
+        </div>
+
+        <p class="game-footnote">保持直覺作答 · 第一次選擇即鎖定</p>
+      </section>
+
+      <section id="results-screen" class="screen results-screen" aria-labelledby="results-title" hidden>
+        <div class="results-heading">
+          <div>
+            <p class="eyebrow"><span></span> 測驗完成</p>
+            <h1 id="results-title">你的測驗結果</h1>
+          </div>
+          <button id="restart-button" class="secondary-button" type="button">重新測驗 <span aria-hidden="true">↻</span></button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card accent">
+            <span class="metric-label">正確率</span>
+            <strong id="accuracy-value">—</strong>
+            <span id="accuracy-detail" class="metric-detail">—</span>
+          </article>
+          <article class="metric-card featured">
+            <span class="metric-label">中位數反應時間</span>
+            <strong id="median-rt-value">—</strong>
+            <span class="metric-detail">僅計算答對且未逾時題目</span>
+          </article>
+          <article class="metric-card">
+            <span class="metric-label">平均反應時間</span>
+            <strong id="mean-rt-value">—</strong>
+            <span class="metric-detail">僅計算答對且未逾時題目</span>
+          </article>
+        </div>
+
+        <article class="threshold-panel">
+          <div class="threshold-value-block">
+            <span class="metric-label">色彩辨識閾值</span>
+            <strong id="threshold-value">—</strong>
+            <span id="threshold-confidence" class="confidence-badge">—</span>
+          </div>
+          <div class="threshold-explanation">
+            <p>在本次測驗條件下，當兩個顏色的差異接近此數值時，你開始較難穩定辨認它們。數值越低，代表能辨認越細微的色彩差異。</p>
+            <p id="threshold-note" class="threshold-note"></p>
+          </div>
+        </article>
+
+        <article class="chart-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="metric-label">反應時間趨勢</span>
+              <h2>每題反應時間</h2>
+            </div>
+            <div class="chart-legend" aria-label="圖例">
+              <span><i class="correct"></i>答對</span>
+              <span><i class="incorrect"></i>答錯</span>
+              <span><i class="timeout"></i>逾時</span>
+            </div>
+          </div>
+          <div id="reaction-chart" class="chart-wrap" aria-label="反應時間折線圖"></div>
+        </article>
+
+        <details class="trial-details">
+          <summary>查看每題詳細紀錄 <span aria-hidden="true">＋</span></summary>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>題次</th><th>ΔE00</th><th>結果</th><th>反應時間</th></tr></thead>
+              <tbody id="trial-table-body"></tbody>
+            </table>
+          </div>
+        </details>
+
+        <div class="disclaimer">
+          <span aria-hidden="true">i</span>
+          <p>本測驗結果可能受到螢幕顯示、環境光線、裝置、觀看距離與個人狀態影響。結果僅供互動體驗與相對比較，不作為醫療或臨床診斷依據。</p>
+        </div>
+      </section>
+
+      <section id="error-screen" class="screen error-screen" aria-labelledby="error-title" hidden>
+        <p class="eyebrow"><span></span> 發生問題</p>
+        <h1 id="error-title">無法建立有效的色彩題目</h1>
+        <p id="error-message">請重新開始測驗。我們不會保留這次未完成的資料。</p>
+        <button id="error-restart-button" class="primary-button" type="button">重新開始 <span aria-hidden="true">↻</span></button>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>色彩敏感度測試 · OPERATIONAL ESTIMATE</span>
+      <span>非醫療或臨床診斷工具</span>
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

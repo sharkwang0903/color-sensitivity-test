@@ -27,6 +27,7 @@ const elements = {
   threshold: document.querySelector("#threshold-value"),
   confidence: document.querySelector("#threshold-confidence"),
   thresholdNote: document.querySelector("#threshold-note"),
+  thresholdMethodResult: document.querySelector("#threshold-method-result"),
   chart: document.querySelector("#reaction-chart"),
   tableBody: document.querySelector("#trial-table-body"),
   errorMessage: document.querySelector("#error-message"),
@@ -279,6 +280,19 @@ function confidenceCopy(confidence) {
   return { badge: "資料不足", note: "本次資料不足，閾值僅供粗略參考。" };
 }
 
+function thresholdMethodCopy(threshold) {
+  if (!Number.isFinite(threshold.estimatedThreshold) || threshold.sourceCount === 0) {
+    return "本次沒有足夠的有效 ΔE00 資料，暫時無法估計閾值。";
+  }
+  if (threshold.confidence === "standard") {
+    return `本次使用最後 ${threshold.sourceCount} 次有效 reversal 的 actual ΔE00 中位數。`;
+  }
+  if (threshold.confidence === "low") {
+    return `本次使用 ${threshold.sourceCount} 次有效 reversal 的 actual ΔE00 中位數；資料量較少，請視為初步估計。`;
+  }
+  return `因有效 reversal 不足，本次改用最後 ${threshold.sourceCount} 題正式題的 actual ΔE00 中位數作為粗略參考。`;
+}
+
 function renderTrialTable(trials) {
   const fragment = document.createDocumentFragment();
   trials.forEach((trial) => {
@@ -306,6 +320,7 @@ function showResults() {
   const confidence = confidenceCopy(results.threshold.confidence);
   elements.confidence.textContent = confidence.badge;
   elements.thresholdNote.textContent = confidence.note;
+  elements.thresholdMethodResult.textContent = thresholdMethodCopy(results.threshold);
   renderReactionTimeChart(elements.chart, state.trials, CONFIG.MAX_TIME_PER_TRIAL_MS);
   renderTrialTable(state.trials);
   showScreen("results");
@@ -323,3 +338,4 @@ resetState();
 showScreen("landing");
 
 export { state, staircase, startGame, finishTrial, cleanupTimers };
+

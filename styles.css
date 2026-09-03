@@ -133,7 +133,19 @@ button { touch-action: manipulation; }
 .confidence-badge { display: inline-block; padding: 5px 8px; color: var(--teal-dark); background: var(--teal-soft); font-size: .74rem; font-weight: 700; }
 .threshold-explanation { align-self: center; padding: 31px; color: #445358; line-height: 1.75; }
 .threshold-explanation p { margin: 0; }
+.threshold-context { margin-top: 11px !important; color: var(--muted); font-size: .86rem; }
 .threshold-note { margin-top: 12px !important; color: var(--error); font-weight: 700; }
+.threshold-details { margin-top: 12px; border: 1px solid var(--line); background: var(--paper); }
+.threshold-details summary { padding: 17px 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--ink); font-weight: 700; list-style: none; }
+.threshold-details summary::-webkit-details-marker { display: none; }
+.threshold-details[open] summary { border-bottom: 1px solid var(--line); }
+.threshold-details[open] summary span { transform: rotate(45deg); }
+.threshold-details-body { padding: 21px 24px 23px; color: #445358; font-size: .9rem; line-height: 1.7; }
+.threshold-details-body p { margin: 0; }
+.threshold-details-body ol { margin: 13px 0; padding-left: 1.3rem; }
+.threshold-details-body li + li { margin-top: 6px; }
+.threshold-method-result { padding: 11px 13px; color: var(--teal-dark); background: var(--teal-soft); font-weight: 700; }
+.threshold-method-footnote { margin-top: 13px !important; color: var(--muted); font-size: .82rem; }
 .chart-panel { margin-top: 18px; padding: 28px; border: 1px solid var(--line); background: var(--paper); }
 .panel-heading { display: flex; justify-content: space-between; gap: 20px; align-items: end; }
 .panel-heading h2 { margin: 7px 0 0; font-size: 1.35rem; }
@@ -210,3 +222,4 @@ tbody tr:last-child td { border-bottom: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+

@@ -1,0 +1,36 @@
+export const CONFIG = Object.freeze({
+  GRID_SIZE: 8,
+  PRACTICE_TRIALS: 2,
+  MAX_TRIALS: 30,
+  MAX_TIME_PER_TRIAL_MS: 10_000,
+  NEXT_TRIAL_DELAY_MS: 160,
+
+  INITIAL_DELTA_E: 18,
+  MIN_DELTA_E: 1,
+  MAX_DELTA_E: 30,
+  INITIAL_STEP: 4,
+  MIN_STEP: 0.5,
+  STEP_SCHEDULE: Object.freeze([
+    Object.freeze({ minReversals: 0, maxReversals: 1, step: 4 }),
+    Object.freeze({ minReversals: 2, maxReversals: 3, step: 2 }),
+    Object.freeze({ minReversals: 4, maxReversals: 5, step: 1 }),
+    Object.freeze({ minReversals: 6, maxReversals: Infinity, step: 0.5 }),
+  ]),
+
+  PRACTICE_DELTA_E: 24,
+  DELTA_E_TOLERANCE: 0.35,
+  COLOR_DIRECTION_ATTEMPTS: 64,
+  COLOR_SEARCH_ITERATIONS: 34,
+  MAX_AB_SHIFT: 155,
+  MAX_TRIAL_GENERATION_ATTEMPTS: 4,
+  BASE_COLOR_ATTEMPTS: 100,
+  MIN_BASE_LIGHTNESS: 58,
+  MAX_BASE_LIGHTNESS: 70,
+  MIN_BASE_CHROMA: 10,
+  MAX_BASE_CHROMA: 20,
+
+  THRESHOLD_STANDARD_REVERSALS: 6,
+  THRESHOLD_LOW_REVERSALS: 4,
+  THRESHOLD_REVERSAL_WINDOW: 6,
+  THRESHOLD_FALLBACK_TRIAL_WINDOW: 6,
+});

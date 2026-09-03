@@ -115,9 +115,24 @@
           </div>
           <div class="threshold-explanation">
             <p>在本次測驗條件下，當兩個顏色的差異接近此數值時，你開始較難穩定辨認它們。數值越低，代表能辨認越細微的色彩差異。</p>
+            <p class="threshold-context">這不是一般人平均值或排名，而是依照本次測驗條件估計的操作性數值。</p>
             <p id="threshold-note" class="threshold-note"></p>
           </div>
         </article>
+
+        <details class="threshold-details">
+          <summary>這個數字怎麼來的？ <span aria-hidden="true">＋</span></summary>
+          <div class="threshold-details-body">
+            <p><strong>ΔE00</strong> 是 CIEDE2000 色差公式的結果，用來描述兩個顏色的感知差異；單獨寫作 ΔE 並不能指定使用哪一種色差公式。</p>
+            <ol>
+              <li>每題依照目前的 ΔE00 生成一組色差，並以同一個 session base color 維持測驗條件一致。</li>
+              <li>連續答對 2 題時降低 ΔE00；答錯或逾時時提高 ΔE00，形成 2-down / 1-up adaptive staircase。</li>
+              <li>記錄難度調整方向改變的 reversal，並以 reversal 的 actual ΔE00 中位數估計閾值。</li>
+            </ol>
+            <p id="threshold-method-result" class="threshold-method-result"></p>
+            <p class="threshold-method-footnote">這個估計約追蹤本遊戲條件下接近 70.7% 正確率的區域，不是臨床測量值，也不代表一般人口常模。</p>
+          </div>
+        </details>
 
         <article class="chart-panel">
           <div class="panel-heading">
@@ -166,3 +181,4 @@
     <script type="module" src="js/app.js"></script>
   </body>
 </html>
+
